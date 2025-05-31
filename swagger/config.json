@@ -15,7 +15,11 @@
   "tags": [
     {
       "name": "user",
-      "description": "CRUD Operations"
+      "description": "Operations on users"
+    },
+    {
+      "name": "contribution",
+      "description": "Keep track of user contributions"
     }
   ],
   "paths": {
@@ -506,7 +510,7 @@
           }
         }
       },
-      "languages": {
+      "language": {
         "type": "object",
         "properties": {
           "lang_code": {
