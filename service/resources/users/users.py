@@ -6,14 +6,14 @@ from service import db
 
 # Used for validateion
 user_args = reqparse.RequestParser()
-user_args.add_argument('name', type=str, help="Please enter a name")
-user_args.add_argument('email', type=str, help="Please enter an Email")
+user_args.add_argument('username', type=str, help="Please provide a username")
+user_args.add_argument('pref_langs', type=str, help="Please provide at least one preffered language")
 
 # Used for serialization
 userFields = {
     'id': fields.Integer,
-    'name': fields.String,
-    'email': fields.String
+    'username': fields.String,
+    'pre_langs': fields.String
 }
 
 class UsersGet(Resource):
@@ -26,7 +26,7 @@ class UserPost(Resource):
     @marshal_with(userFields)
     def post(self):
         args = user_args.parse_args()
-        user = UserModel(name=args['name'], email=args['email'])
+        user = UserModel(name=args['username'], email=args['pre_langs'])
         db.session.add(user)
         db.session.commit()
         users = UserModel.query.all()
@@ -48,8 +48,8 @@ class UserPatch(Resource):
         user = UserModel.query.filter_by(id=id).first()
         if not user: 
             abort(400, "User not found")
-        user.name = args["name"]
-        user.name = args["email"]
+        user.username = args["username"]
+        user.pre_langs = args["pre_langs"]
         db.session.commit()
         return user, 200
 
