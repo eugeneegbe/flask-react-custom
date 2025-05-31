@@ -4,6 +4,9 @@ from service import app, api, prefix
 from service.home.home import Home
 from swagger.swaggerConfig import SwaggerConfig
 from service.resources.users.users import UsersGet, UserPost, UserGet, UserPatch, UserDelete
+from service.resources.contributions.contribution import (ContributionsGet, ContributionPost, ContributionGet,
+                                                          ContributionPatch, ContributionDelete)
+from service.resources.languages.languages import LanguageGet, LanguagesGet
 
 
 api.add_resource(SwaggerConfig, '/swagger-config')
@@ -14,6 +17,15 @@ api.add_resource(UserGet, '/users/<int:id>')
 api.add_resource(UserPatch, '/users/<int:id>')
 api.add_resource(UserDelete, '/users/<int:id>')
 api.add_resource(Home, '/home')
+
+api.add_resource(ContributionsGet, '/contributions/')
+api.add_resource(ContributionPost, '/contributions/')
+api.add_resource(ContributionGet, '/contribution/<int:id>')
+api.add_resource(ContributionPatch, '/contribution/<int:id>')
+api.add_resource(ContributionDelete, '/contribution/<int:id>')
+
+api.add_resource(LanguagesGet, '/languages/')
+api.add_resource(LanguageGet, '/languages/<string:lang_code>')
 
 
 @app.route('/')

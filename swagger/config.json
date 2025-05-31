@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "AGPB API",
-    "version": "2.0.0"
+    "version": "3.0.0"
   },
   "servers": [
     {
@@ -202,6 +202,268 @@
           }
         }
       }
+    },
+    "/contributions": {
+      "get": {
+        "tags": [
+          "contribution"
+        ],
+        "summary": "Retrieve all contrutions",
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contribution"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "contribution"
+        ],
+        "summary": "Create a contribution",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "Eugene233"
+                  },
+                  "lang_code": {
+                    "type": "string",
+                    "example": "de"
+                  },
+                  "edit_type": {
+                    "type": "string",
+                    "example": "audio|lexeme"
+                  },
+                  "data": {
+                    "type": "string",
+                    "example": "Eugene233@agpb-Audio-L23"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contributions/{id}": {
+      "get": {
+        "tags": [
+          "contribution"
+        ],
+        "summary": "Retrieve specific contribution",
+        "parameters": [
+          {
+            "id": "id",
+            "in": "id",
+            "required": true,
+            "schema": {
+              "type": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contribution"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contribution not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "contribution"
+        ],
+        "summary": "Update a contribution",
+        "parameters": [
+          {
+            "id": "id",
+            "in": "id",
+            "required": true,
+            "schema": {
+              "type": "int32"
+            },
+            "description": "id of the contribution to be updated"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "int32",
+                    "example": 1
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "Eugene233"
+                  },
+                  "lang_code": {
+                    "type": "string",
+                    "example": "de"
+                  },
+                  "edit_type": {
+                    "type": "string",
+                    "example": "audio|lexeme"
+                  },
+                  "data": {
+                    "type": "string",
+                    "example": "Eugene233@agpb-Audio-L23"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "contribution not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "contribution"
+        ],
+        "summary": "Delete a contribution",
+        "parameters": [
+          {
+            "id": "id",
+            "in": "id",
+            "required": true,
+            "schema": {
+              "type": "int32"
+            },
+            "description": "id of the contribution to be deleted"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted successfully"
+          },
+          "404": {
+            "description": "contribution not found"
+          }
+        }
+      }
+    },
+    "/languages": {
+      "get": {
+        "tags": [
+          "language"
+        ],
+        "summary": "Retrieve all languages",
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/languages"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/languages/{lang_code}": {
+      "get": {
+        "tags": [
+          "language"
+        ],
+        "summary": "Retrieve specific language",
+        "parameters": [
+          {
+            "lang_code": "lang_code",
+            "in": "lang_code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/languages"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Language not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -216,6 +478,44 @@
           "username": {
             "type": "string",
             "example": "Eugene233"
+          }
+        }
+      },
+      "contribution": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "int32",
+            "example": 1
+          },
+          "username": {
+            "type": "string",
+            "example": "Eugene233"
+          },
+          "lang_code": {
+            "type": "string",
+            "example": "de"
+          },
+          "edit_type": {
+            "type": "string",
+            "example": "audio|lexeme"
+          },
+          "data": {
+            "type": "string",
+            "example": "Eugene233@agpb-Audio-L23-File:Audo-de.ogg"
+          }
+        }
+      },
+      "languages": {
+        "type": "object",
+        "properties": {
+          "lang_code": {
+            "type": "string",
+            "example": "de"
+          },
+          "lang_label": {
+            "type": "string",
+            "example": "Deutsch"
           }
         }
       }
