@@ -20,6 +20,14 @@
     {
       "name": "contribution",
       "description": "Keep track of user contributions"
+    },
+    {
+      "name": "lexeme",
+      "description": "Fetch and use wikidata lexemes"
+    },
+    {
+      "name": "glosses",
+      "description": "Fetch Lexeme glosses in other languages"
     }
   ],
   "paths": {
@@ -468,6 +476,104 @@
           }
         ]
       }
+    },
+    "/lexemes": {
+      "post": {
+        "tags": [
+          "lexeme"
+        ],
+        "summary": "Search for lexemes matching a particular language",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "search": {
+                    "type": "string",
+                    "example": "ma"
+                  },
+                  "src_lang": {
+                    "type": "string",
+                    "example": "en"
+                  },
+                  "ismatch": {
+                    "type": "int32",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Searched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/lexemes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lexemes/{id}": {
+      "post": {
+        "tags": [
+          "glosses"
+        ],
+        "summary": "Retrieve specific lexeme glosses (Possible existing word translations)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "L3625"
+                  },
+                  "src_lang": {
+                    "type": "string",
+                    "example": "en"
+                  },
+                  "lang_1": {
+                    "type": "string",
+                    "example": "de"
+                  },
+                  "lang_2": {
+                    "type": "string",
+                    "example": "fr"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/glosses"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Glosses not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -520,6 +626,44 @@
           "lang_label": {
             "type": "string",
             "example": "Deutsch"
+          }
+        }
+      },
+      "lexemes": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "L30601"
+          },
+          "label": {
+            "type": "string",
+            "example": "ma"
+          },
+          "language": {
+            "type": "string",
+            "example": "tr"
+          },
+          "description": {
+            "type": "string",
+            "example": "Turkish, nyaa\u014ba bi\u025blimpahirili"
+          }
+        }
+      },
+      "glosses": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "en"
+          },
+          "language": {
+            "type": "string",
+            "example": "de"
+          },
+          "value": {
+            "type": "string",
+            "example": "Mutter"
           }
         }
       }

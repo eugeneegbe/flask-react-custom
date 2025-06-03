@@ -10,6 +10,7 @@ class ENVIRONMENT:
         self.port = os.getenv("PORT")
         self.prefix = os.getenv("PREFIX")
         self.domain = os.getenv("DOMAIN")
+        self.base_url = os.getenv("BASE_URL")
 
     def get_instance(self):
         if not hasattr(self, "_instance"):
@@ -25,11 +26,14 @@ class ENVIRONMENT:
     def getPrefix(self):
         return self.prefix
 
+    def getBasicUrl(self):
+        return self.base_url
+
 
 domain = ENVIRONMENT().get_instance().getDomain()
 port = ENVIRONMENT().get_instance().getPort()
 prefix = ENVIRONMENT().get_instance().getPrefix()
-
+base_url = ENVIRONMENT().get_instance().getBasicUrl()
 
 def build_swagger_config_json():
     config_file_path = os.path.dirname(__file__) +  '/swagger/config.json'
