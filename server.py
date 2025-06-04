@@ -6,7 +6,7 @@ from service.resources.users.users import UsersGet, UserPost, UserGet, UserPatch
 from service.resources.contributions.contribution import (ContributionsGet, ContributionPost, ContributionGet,
                                                           ContributionPatch, ContributionDelete)
 from service.resources.languages.languages import LanguageGet, LanguagesGet
-from service.resources.wikidata.lexeme import LexemesGet, LexemeGlossesGet
+from service.resources.wikidata.lexeme import LexemesGet, LexemeGlossesGet, LexemeFormAudioGet
 
 
 api.add_resource(SwaggerConfig, '/swagger-config')
@@ -28,6 +28,7 @@ api.add_resource(LanguageGet, '/languages/<string:lang_code>')
 
 api.add_resource(LexemesGet, '/lexemes/')
 api.add_resource(LexemeGlossesGet, '/lexemes/<string:id>')
+api.add_resource(LexemeFormAudioGet, '/forms/audio/<string:id>')
 
 
 @app.route('/')

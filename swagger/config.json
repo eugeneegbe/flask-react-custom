@@ -28,6 +28,10 @@
     {
       "name": "glosses",
       "description": "Fetch Lexeme glosses in other languages"
+    },
+    {
+      "name": "forms",
+      "description": "Fetch Lexeme Form Audios matching lang1 and lang2"
     }
   ],
   "paths": {
@@ -574,6 +578,65 @@
           }
         ]
       }
+    },
+    "/forms/audio/{id}": {
+      "post": {
+        "tags": [
+          "forms"
+        ],
+        "summary": "Retrieve specific form audio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "search_term": {
+                    "type": "string",
+                    "example": "mother"
+                  },
+                  "id": {
+                    "type": "string",
+                    "example": "L3625"
+                  },
+                  "src_lang": {
+                    "type": "string",
+                    "example": "en"
+                  },
+                  "lang_1": {
+                    "type": "string",
+                    "example": "de"
+                  },
+                  "lang_2": {
+                    "type": "string",
+                    "example": "fr"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/forms"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Glosses not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -664,6 +727,23 @@
           "value": {
             "type": "string",
             "example": "Mutter"
+          }
+        }
+      },
+      "forms": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "L3625-F1"
+          },
+          "language": {
+            "type": "string",
+            "example": "en"
+          },
+          "audio": {
+            "type": "string",
+            "example": "En-uk-mother.ogg"
           }
         }
       }

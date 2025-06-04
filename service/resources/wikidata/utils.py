@@ -1,6 +1,7 @@
 
 import requests
 from common import base_url
+from difflib import get_close_matches
 
 def make_api_request(url, PARAMS):
     """ Makes request to an end point to get data
@@ -73,23 +74,19 @@ def lexemes_search(search, src_lang, ismatch):
 def process_lexeme_sense_data(senses_data, lang_1, lang_2):
     """
     """
+
     processed_data = {}
 
     for sense in senses_data:
         sense_base = {}
-
         sense_base['id'] = sense['id']
         sense_gloss = sense['glosses']
         if sense_gloss:
-            if lang_1 in list(sense_gloss.keys()):
-                sense_base['language'] = lang_1 
-                sense_base['value'] = sense_gloss[lang_1]['value']
-                processed_data.setdefault(sense['id'], []).append(sense_base)
-            if lang_2 in list(sense_gloss.keys()):
-                print('sense_gloss 2 ', sense_gloss[lang_2])
-                sense_base['language'] = lang_2
-                sense_base['value'] = sense_gloss[lang_2]['value']
-                processed_data.setdefault(sense['id'], []).append(sense_base)
+            for lang in [lang_1, lang_2]:
+                if lang in sense_gloss:
+                    processed_data.setdefault(sense['id'], [])
+                    processed_data[sense['id']].append(sense_gloss[lang])
+
     return [processed_data]
 
 
@@ -112,3 +109,47 @@ def get_lexeme_sense_glosses(lexeme_id, src_lang, lang_1, lang_2):
     glosses_data = process_lexeme_sense_data(lexeme_senses_data['entities'][lexeme_id]['senses'],
                                             lang_1, lang_2)
     return glosses_data
+
+
+
+
+def process_lexeme_form_data(search_term, data, lang_1, lang_2):
+    processed_data = {}
+    print('data ', data)
+
+    for form in data:
+        for lang in [lang_1, lang_2]:
+            reps_match = {lang: {'language': lang, 'value': search_term}}
+
+            if form['representations'] == reps_match and form['claims']:
+                processed_data.setdefault(form['id'], [])
+                form_claims_audios = form['claims']['P443']
+
+                potential_match_audio = []
+                for audio_claim in form_claims_audios:
+                    # TODO: Find a way to best match serach term to audio
+                    potential_match_audio.append(audio_claim['mainsnak']['datavalue']['value'])
+
+                best_match_audio = get_close_matches(lang + '-' + search_term, potential_match_audio)
+                processed_data[form['id']].append({
+                    'language': lang,
+                    'audio': best_match_audio[0] if len(best_match_audio ) > 1 else best_match_audio
+                })
+    return [processed_data]
+
+
+def get_lexeme_forms_audio(search_term, lexeme_id, src_lang, lang_1, lang_2):
+    PARAMS = {
+        "action": "wbgetentities",
+        "format": "json",
+        "languages": src_lang,
+        "ids": lexeme_id
+    }
+
+    lexeme_data = make_api_request(base_url, PARAMS)
+
+    if not lexeme_data:
+        return 'Failure'
+
+    form_data = process_lexeme_form_data(search_term, lexeme_data['entities'][lexeme_id]['forms'],lang_1, lang_2)
+    return form_data
