@@ -8,6 +8,7 @@ from service.resources.contributions.contribution import (ContributionsGet, Cont
 from service.resources.languages.languages import LanguageGet, LanguagesGet
 from service.resources.wikidata.lexeme import LexemesGet, LexemeGlossesGet, LexemeFormAudioGet
 
+from service.resources.commons.commons import CommonsFIleUrLPost
 
 api.add_resource(SwaggerConfig, '/swagger-config')
 
@@ -29,6 +30,8 @@ api.add_resource(LanguageGet, '/languages/<string:lang_code>')
 api.add_resource(LexemesGet, '/lexemes/')
 api.add_resource(LexemeGlossesGet, '/lexemes/<string:id>')
 api.add_resource(LexemeFormAudioGet, '/forms/audio/<string:id>')
+
+api.add_resource(CommonsFIleUrLPost, '/file/url/<string:file_name>')
 
 
 @app.route('/')

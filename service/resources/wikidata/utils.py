@@ -33,7 +33,6 @@ def process_search_results(search_results, search, src_lang, ismatch_search):
         for result in search_results:
             res_item = {}
             if result['match'] == src_match:
-
                 res_item['id'] = result['id']
                 res_item['label'] = result['label']
                 res_item['language'] = src_lang
@@ -74,10 +73,9 @@ def lexemes_search(search, src_lang, ismatch):
 def process_lexeme_sense_data(senses_data, lang_1, lang_2):
     """
     """
-
     processed_data = {}
-
-    for sense in senses_data:
+    
+    for sense in senses_data['senses']:
         sense_base = {}
         sense_base['id'] = sense['id']
         sense_gloss = sense['glosses']
@@ -106,11 +104,9 @@ def get_lexeme_sense_glosses(lexeme_id, src_lang, lang_1, lang_2):
     if not lexeme_senses_data:
         return 'Failure'
 
-    glosses_data = process_lexeme_sense_data(lexeme_senses_data['entities'][lexeme_id]['senses'],
+    glosses_data = process_lexeme_sense_data(lexeme_senses_data['entities'][lexeme_id],
                                             lang_1, lang_2)
     return glosses_data
-
-
 
 
 def process_lexeme_form_data(search_term, data, lang_1, lang_2):

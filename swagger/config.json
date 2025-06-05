@@ -32,6 +32,10 @@
     {
       "name": "forms",
       "description": "Fetch Lexeme Form Audios matching lang1 and lang2"
+    },
+    {
+      "name": "file",
+      "description": "Get file downloadable url from file name"
     }
   ],
   "paths": {
@@ -426,9 +430,9 @@
     "/languages": {
       "get": {
         "tags": [
-          "language"
+          "languages"
         ],
-        "summary": "Retrieve all languages",
+        "summary": "Retrieve all language",
         "responses": {
           "200": {
             "description": "Successful",
@@ -444,28 +448,33 @@
       }
     },
     "/languages/{lang_code}": {
-      "get": {
+      "post": {
         "tags": [
           "language"
         ],
-        "summary": "Retrieve specific language",
-        "parameters": [
-          {
-            "lang_code": "lang_code",
-            "in": "lang_code",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "summary": "Get single langue info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "lang_code": {
+                    "type": "string",
+                    "example": "en"
+                  }
+                }
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/languages"
+                  "$ref": "#/components/schemas/language"
                 }
               }
             }
@@ -637,6 +646,49 @@
           }
         ]
       }
+    },
+    "/file/url/{filename}": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Get audio Full Url from filename",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "filename": {
+                    "type": "string",
+                    "example": "En-us-mother.ogg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/file"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File url not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -676,6 +728,19 @@
           "data": {
             "type": "string",
             "example": "Eugene233@agpb-Audio-L23-File:Audo-de.ogg"
+          }
+        }
+      },
+      "languages": {
+        "type": "object",
+        "properties": {
+          "lang_code": {
+            "type": "string",
+            "example": "de"
+          },
+          "lang_label": {
+            "type": "string",
+            "example": "Deutsch"
           }
         }
       },
@@ -744,6 +809,19 @@
           "audio": {
             "type": "string",
             "example": "En-uk-mother.ogg"
+          }
+        }
+      },
+      "file": {
+        "type": "object",
+        "properties": {
+          "filenae": {
+            "type": "string",
+            "example": "En-uk-mother.ogg"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://upload.wikimedia.org/wikipedia/commons/6/6f/En-uk-mother.ogg"
           }
         }
       }

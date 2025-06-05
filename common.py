@@ -11,6 +11,7 @@ class ENVIRONMENT:
         self.prefix = os.getenv("PREFIX")
         self.domain = os.getenv("DOMAIN")
         self.base_url = os.getenv("BASE_URL")
+        self.commons_url = os.getenv("WM_COMMONS_URL")
 
     def get_instance(self):
         if not hasattr(self, "_instance"):
@@ -26,14 +27,19 @@ class ENVIRONMENT:
     def getPrefix(self):
         return self.prefix
 
-    def getBasicUrl(self):
+    def getBaseUrl(self):
         return self.base_url
+    
+    def getCommonsAPIUrl(self):
+        return self.commons_url
 
 
 domain = ENVIRONMENT().get_instance().getDomain()
 port = ENVIRONMENT().get_instance().getPort()
 prefix = ENVIRONMENT().get_instance().getPrefix()
-base_url = ENVIRONMENT().get_instance().getBasicUrl()
+base_url = ENVIRONMENT().get_instance().getBaseUrl()
+commons_url = ENVIRONMENT().get_instance().getCommonsAPIUrl()
+
 
 def build_swagger_config_json():
     config_file_path = os.path.dirname(__file__) +  '/swagger/config.json'
