@@ -3,3 +3,4 @@ node_modules
 instance/
 .venv
 /service/app.sqlite
+venv

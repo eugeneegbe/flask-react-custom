@@ -7,6 +7,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from common import domain, port, prefix, build_swagger_config_json
 
 app = Flask(__name__, template_folder='../templates')
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
 
