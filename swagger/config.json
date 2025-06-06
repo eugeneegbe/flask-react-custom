@@ -36,6 +36,14 @@
     {
       "name": "file",
       "description": "Get file downloadable url from file name"
+    },
+    {
+      "name": "languages",
+      "description": "Get all the supported language"
+    },
+    {
+      "name": "language",
+      "description": "Get specific language detils"
     }
   ],
   "paths": {
@@ -647,7 +655,7 @@
         ]
       }
     },
-    "/file/url/{filename}": {
+    "/file/url/{titles}": {
       "post": {
         "tags": [
           "file"
@@ -659,9 +667,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "filename": {
+                  "titles": {
                     "type": "string",
-                    "example": "En-us-mother.ogg"
+                    "example": "File:En-us-mother.ogg|File:Electromagnetic.ogg|File:En-us-'cause.ogg"
                   }
                 }
               }
@@ -778,23 +786,6 @@
           }
         }
       },
-      "glosses": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "example": "en"
-          },
-          "language": {
-            "type": "string",
-            "example": "de"
-          },
-          "value": {
-            "type": "string",
-            "example": "Mutter"
-          }
-        }
-      },
       "forms": {
         "type": "object",
         "properties": {
@@ -815,13 +806,57 @@
       "file": {
         "type": "object",
         "properties": {
-          "filenae": {
+          "filename": {
             "type": "string",
             "example": "En-uk-mother.ogg"
           },
           "url": {
             "type": "string",
             "example": "https://upload.wikimedia.org/wikipedia/commons/6/6f/En-uk-mother.ogg"
+          }
+        }
+      },
+      "glosses": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "lexeme": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "L3625"
+                  },
+                  "lexicalCategoryId": {
+                    "type": "string",
+                    "example": "Q1084"
+                  },
+                  "lexicalCategoryLabel": {
+                    "type": "string",
+                    "example": "noun"
+                  }
+                }
+              }
+            },
+            "gloss": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "language": {
+                    "type": "string",
+                    "example": "de"
+                  },
+                  "value": {
+                    "type": "string",
+                    "example": "Mutter"
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -31,7 +31,7 @@ api.add_resource(LexemesGet, '/lexemes/')
 api.add_resource(LexemeGlossesGet, '/lexemes/<string:id>')
 api.add_resource(LexemeFormAudioGet, '/forms/audio/<string:id>')
 
-api.add_resource(CommonsFIleUrLPost, '/file/url/<string:file_name>')
+api.add_resource(CommonsFIleUrLPost, '/file/url/<string:titles>')
 
 
 @app.route('/')

@@ -24,6 +24,18 @@ form_audio_args.add_argument('lang_1', type=str, help="Please provide the first 
 form_audio_args.add_argument('lang_2', type=str, help="Please provide the second language")
 
 
+lexeme_response_fields = {
+    'lexeme': fields.Nested({
+        'id': fields.String,
+        'lexicalCategoryId': fields.String,
+        'lexicalCategoryLabel': fields.String,
+    }),
+    'gloss': fields.List(fields.Nested({
+        'language': fields.String,
+        'value': fields.String,
+    })),
+}
+
 # Used for serialization
 lexemeSearcFields = {
     'id': fields.String,
@@ -48,12 +60,14 @@ class LexemesGet(Resource):
 
 
 class LexemeGlossesGet(Resource):
+    @marshal_with(lexeme_response_fields)
     def post(self, id):
         args = lexeme_args.parse_args()
         if not id or not args['lang_1'] or not args['lang_2'] or not args['src_lang']:
             abort(400, f'Please provide required parameters {str(list(args.keys()))}')
 
         lexeme_glosses = get_lexeme_sense_glosses(args['id'], args['src_lang'], args['lang_1'], args['lang_2'])
+
         if type(lexeme_glosses) != list:
             abort(lexeme_glosses['status_code'], lexeme_glosses)
 
@@ -68,11 +82,7 @@ class LexemeFormAudioGet(Resource):
             abort(400, f'Please check required parameters {str(list(args.keys()))}')
         lexeme_audios = get_lexeme_forms_audio(args['search_term'], args['id'], args['src_lang'],
                                                args['lang_1'], args['lang_2'])
+        if type(lexeme_audios) != list:
+            abort(lexeme_audios['status_code'], lexeme_audios)
+
         return lexeme_audios
-
-
-# Todo: Get Lexeme Form Which matches lang1 and 2
-        # Check if they have P443
-            # - For every match form, get its claims with P443
-            # - Return Values if present or empty if not
-        # HINT: similar to LexemeGlossesGet logic
