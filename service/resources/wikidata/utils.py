@@ -1,5 +1,7 @@
 
 import requests
+import json
+from flask import make_response
 from common import base_url
 from difflib import get_close_matches
 
@@ -14,12 +16,18 @@ def make_api_request(url, PARAMS):
             data (obj): Json object of the recieved data.
     """
 
-    S = requests.Session()
-    r = S.get(url=url, params=PARAMS)
-    data = r.json()
+    try:
+        S = requests.Session()
+        r = S.get(url=url, params=PARAMS)
+        data = r.json()
+    except Exception as e:
+        return {
+            'message': str(e),
+            'status_code': 503
+        }
 
     if data is None:
-        return {}
+        return None
     else:
         return data
 
@@ -64,6 +72,10 @@ def lexemes_search(search, src_lang, ismatch):
     }
 
     wd_search_results = make_api_request(base_url, PARAMS)
+
+    if 'status_code' in list(wd_search_results.keys()):
+        return wd_search_results
+
     search_result_data = process_search_results(wd_search_results['search'],
                                                 search, src_lang, bool(ismatch))
 
@@ -74,7 +86,7 @@ def process_lexeme_sense_data(senses_data, lang_1, lang_2):
     """
     """
     processed_data = {}
-    
+
     for sense in senses_data['senses']:
         sense_base = {}
         sense_base['id'] = sense['id']
@@ -101,8 +113,8 @@ def get_lexeme_sense_glosses(lexeme_id, src_lang, lang_1, lang_2):
 
     lexeme_senses_data = make_api_request(base_url, PARAMS)
 
-    if not lexeme_senses_data:
-        return 'Failure'
+    if 'status_code' in list(lexeme_senses_data.keys()):
+        return lexeme_senses_data
 
     glosses_data = process_lexeme_sense_data(lexeme_senses_data['entities'][lexeme_id],
                                             lang_1, lang_2)

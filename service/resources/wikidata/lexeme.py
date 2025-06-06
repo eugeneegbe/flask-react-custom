@@ -1,4 +1,4 @@
-from flask import abort
+from flask import abort, jsonify
 from flask_restful import (Resource, reqparse,
                            fields, marshal_with)
 
@@ -40,9 +40,10 @@ class LexemesGet(Resource):
         if not args['search'] or not args['src_lang']:
             abort(400, f'Please provide required parameters {str(list(args.keys()))}')
 
-        print('is00s0df0ds0f0sadfd match', args['ismatch'])
-
         lexemes = lexemes_search(args['search'], args['src_lang'], ismatch=int(args['ismatch']))
+        if type(lexemes) != list:
+            abort(lexemes['status_code'], lexemes)
+
         return lexemes, 200
 
 
@@ -53,6 +54,9 @@ class LexemeGlossesGet(Resource):
             abort(400, f'Please provide required parameters {str(list(args.keys()))}')
 
         lexeme_glosses = get_lexeme_sense_glosses(args['id'], args['src_lang'], args['lang_1'], args['lang_2'])
+        if type(lexeme_glosses) != list:
+            abort(lexeme_glosses['status_code'], lexeme_glosses)
+
         return lexeme_glosses, 200
 
 
