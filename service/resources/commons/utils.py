@@ -3,6 +3,7 @@ import requests
 from ..wikidata.utils import make_api_request
 from common import commons_url
 
+
 def get_media_url_by_title(file_titles):
  
     PARAMS = {
@@ -28,7 +29,7 @@ def get_media_url_by_title(file_titles):
         media_url = media_pages[media_id]['imageinfo'][0]['url']
 
         media_object['title'] = media_title
-        media_object['url'] = media_url if media_url else None 
+        media_object['url'] = media_url if media_url else None
         media_results.append(media_object)
     
     return media_results
@@ -45,9 +46,9 @@ def upload_file(file_data, csrf_token, api_auth_token, file_name, lang_label):
 
     try:
         response = requests.post(commons_url,
-                                data=params,
-                                auth=api_auth_token,
-                                files={'file': io.BytesIO(file_data)})
+                                 data=params,
+                                 auth=api_auth_token,
+                                 files={'file': io.BytesIO(file_data)})
     except Exception as e:
         return {
             'info': str(e),

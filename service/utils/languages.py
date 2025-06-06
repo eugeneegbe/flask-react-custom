@@ -32,7 +32,7 @@ def getLanguages():
         ('ch', 'Chamorro'),
         ('ce', 'Chechen'),
         ('zh', 'Chinese'),
-        ('cu', 'Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic'),
+        ('cu', 'Church Slavic; Old Slavonic; Old Church Slavonic'),
         ('cv', 'Chuvash'),
         ('kw', 'Cornish'),
         ('co', 'Corsican'),

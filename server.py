@@ -1,12 +1,16 @@
-import os
 from flask import redirect
 from service import app, api, prefix
 from swagger.swaggerConfig import SwaggerConfig
-from service.resources.users.users import UsersGet, UserPost, UserGet, UserPatch, UserDelete
-from service.resources.contributions.contribution import (ContributionsGet, ContributionPost, ContributionGet,
-                                                          ContributionPatch, ContributionDelete)
+from service.resources.users.users import (UsersGet, UserPost, UserGet,
+                                           UserPatch, UserDelete)
+from service.resources.contributions.contribution import (ContributionsGet,
+                                                          ContributionPost,
+                                                          ContributionGet,
+                                                          ContributionPatch,
+                                                          ContributionDelete)
 from service.resources.languages.languages import LanguageGet, LanguagesGet
-from service.resources.wikidata.lexeme import LexemesGet, LexemeGlossesGet, LexemeFormAudioGet
+from service.resources.wikidata.lexeme import (LexemesGet, LexemeGlossesGet,
+                                               LexemeFormAudioGet)
 
 from service.resources.commons.commons import CommonsFIleUrLPost
 

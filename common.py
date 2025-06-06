@@ -42,7 +42,7 @@ commons_url = ENVIRONMENT().get_instance().getCommonsAPIUrl()
 
 
 def build_swagger_config_json():
-    config_file_path = os.path.dirname(__file__) +  '/swagger/config.json'
+    config_file_path = os.path.dirname(__file__) + '/swagger/config.json'
 
     with open(config_file_path, 'r') as file:
         config_data = json.load(file)
@@ -52,7 +52,7 @@ def build_swagger_config_json():
         {"url": f"http://{domain}:{port}{prefix}"}
     ]
 
-    new_config_file_path = os.path.dirname(__file__) +  '/swagger/config.json'
+    new_config_file_path = os.path.dirname(__file__) + '/swagger/config.json'
 
     with open(new_config_file_path, 'w') as new_file:
         json.dump(config_data, new_file, indent=2)

@@ -1,7 +1,6 @@
 import os
-from flask import Flask, jsonify, redirect
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
 from flask_restful import Api, MethodNotAllowed, NotFound
 from flask_swagger_ui import get_swaggerui_blueprint
 
@@ -42,4 +41,3 @@ def handle_method_not_allowed_error(e):
     response = jsonify({"message": str(e)})
     response.status_code = 405
     return response
-

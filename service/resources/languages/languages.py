@@ -18,9 +18,9 @@ class LanguagesGet(Resource):
         lang_data = []
         for lang in data:
             lang_pair = {
-                    'lang_code': lang[0],
-                    'lang_label': lang[1]
-                }
+                'lang_code': lang[0],
+                'lang_label': lang[1]
+            }
             lang_data.append(lang_pair)
         return lang_data
 
@@ -34,9 +34,12 @@ class LanguageGet(Resource):
     def post(self, lang_code):
         args = lang_args.parse_args()
 
-        if not args['lang_code']: 
+        if not args['lang_code']:
             abort(400, "Language not supported")
-        lang_pair = [(code, lab) for (code, lab) in getLanguages() if code ==  args['lang_code']][0]
+        lang_pair = []
+        for language in getLanguages():
+            if language[0] == args['lang_code']:
+                lang_pair.append(language)
         return {
             'lang_code': list(lang_pair)[0],
             'lang_label': list(lang_pair)[1]

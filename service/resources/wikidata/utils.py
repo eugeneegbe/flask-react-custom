@@ -1,9 +1,9 @@
 
 import requests
-import json
 from wikidata.client import Client
 from common import base_url
 from difflib import get_close_matches
+
 
 def make_api_request(url, PARAMS):
     """ Makes request to an end point to get data
@@ -42,7 +42,8 @@ def process_search_results(search_results, search, src_lang, ismatch_search):
                 res_item['label'] = result['label']
                 res_item['language'] = src_lang
                 res_item['description'] = result['description']
-                lexeme_result.append(res_item) 
+                lexeme_result.append(res_item)
+
     else:
         for res in search_results:
             res_item = {}
@@ -112,7 +113,7 @@ def process_lexeme_sense_data(senses_data, lang_1, lang_2):
 
 
 def get_lexeme_sense_glosses(lexeme_id, src_lang, lang_1, lang_2):
-    """ 
+    """
     Gloses for a particular lexeme
     """
     PARAMS = {
@@ -128,7 +129,7 @@ def get_lexeme_sense_glosses(lexeme_id, src_lang, lang_1, lang_2):
         return lexeme_senses_data
 
     glosses_data = process_lexeme_sense_data(lexeme_senses_data['entities'][lexeme_id],
-                                            lang_1, lang_2)
+                                             lang_1, lang_2)
     return glosses_data
 
 
@@ -148,13 +149,17 @@ def process_lexeme_form_data(search_term, data, src_lang, lang_1, lang_2):
                 potential_match_audio = []
                 for audio_claim in form_claims_audios:
                     # TODO: Find a way to best match serach term to audio
-                    potential_match_audio.append(audio_claim['mainsnak']['datavalue']['value'])
+                    value = audio_claim['mainsnak']['datavalue']['value']
+                    potential_match_audio.append(value)
 
-                best_match_audio = get_close_matches(lang + '-' + search_term, potential_match_audio)
-                audio_object['audio'] =  "File:" + best_match_audio[0] if len(best_match_audio ) > 1 else best_match_audio
+                best_match_audio = get_close_matches(lang + '-' + search_term,
+                                                     potential_match_audio)
+                audio_object['audio'] = "File:" + best_match_audio[0] if \
+                    len(best_match_audio) > 1 else best_match_audio
             else:
                 audio_object['audio'] = None
-            form_audio_list.append(audio_object)    
+                form_audio_list.append(audio_object)
+  
         processed_data[form['id']] = form_audio_list
 
     return [processed_data]
@@ -173,5 +178,7 @@ def get_lexeme_forms_audio(search_term, lexeme_id, src_lang, lang_1, lang_2):
     if 'status_code' in list(lexeme_data.keys()):
         return lexeme_data
 
-    form_data = process_lexeme_form_data(search_term, lexeme_data['entities'][lexeme_id]['forms'], src_lang, lang_1, lang_2)
+    form_data = process_lexeme_form_data(search_term,
+                                         lexeme_data['entities'][lexeme_id]['forms'],
+                                         src_lang, lang_1, lang_2)
     return form_data
